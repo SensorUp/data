@@ -401,6 +401,26 @@ export default Adapter.extend(BuildURLMixin, {
   },
 
   /**
+    Called by the store in order to fetch a JSON object for the record
+    that match a particular id and query.
+
+    The `queryOne` method makes an Ajax (HTTP GET) request to a URL computed by
+    `buildURL`, and returns a promise for the resulting payload.
+
+    The `query` argument is a simple JavaScript object that will be passed directly
+    to the server as parameters.
+
+    @method findQuery
+    @param {DS.Store} store
+    @param {subclass of DS.Model} type
+    @param {Object} query
+    @return {Promise} promise
+  */
+  queryOne: function(store, type, id, query) {
+    return this.ajax(this.buildURL(type.typeKey, id), 'GET', { data: query });
+  },
+
+  /**
     Called by the store in order to fetch several records together if `coalesceFindRequests` is true
 
     For example, if the original payload looks like:

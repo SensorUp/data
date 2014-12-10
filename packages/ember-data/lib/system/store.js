@@ -35,7 +35,8 @@ import {
   _findHasMany,
   _findBelongsTo,
   _findAll,
-  _findQuery
+  _findQuery,
+  _queryOne
 } from "ember-data/system/store/finders";
 
 import RecordArrayManager from "ember-data/system/record-array-manager";
@@ -966,6 +967,33 @@ Store = Service.extend({
     Ember.assert("You tried to load a query but your adapter does not implement `findQuery`", typeof adapter.findQuery === 'function');
 
     return promiseArray(_findQuery(adapter, this, type, query, array));
+  },
+
+  /**
+    This method delegates a query to the adapter. This is the one place where
+    adapter-level semantics are exposed to the application.
+
+    Exposing queries this way seems preferable to creating an abstract query
+    language for all server-side queries, and then require all adapters to
+    implement them.
+
+    This method returns a promise, which is resolved with a `RecordArray`
+    once the server returns.
+
+    @method findQuery
+    @private
+    @param {String or subclass of DS.Model} type
+    @param {any} query an opaque query to be used by the adapter
+    @return {Promise} promise
+  */
+  queryOne: function(typeName, id, query) {
+    var type = this.modelFor(typeName);
+    var adapter = this.adapterFor(type);
+
+    Ember.assert("You tried to load a query but you have no adapter (for " + type + ")", adapter);
+    Ember.assert("You tried to load a query but your adapter does not implement `queryOne`", typeof adapter.queryOne === 'function');
+
+    return promiseObject(_queryOne(adapter, this, type, query));
   },
 
   /**

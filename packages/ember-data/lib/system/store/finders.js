@@ -154,3 +154,17 @@ export function _findQuery(adapter, store, type, query, recordArray) {
 
   }, null, "DS: Extract payload of findQuery " + type);
 }
+
+export function _queryOne(adapter, store, type, id, query) {
+  var promise = adapter.queryOne(store, type, id, query);
+  var serializer = serializerForAdapter(store, adapter, type);
+  var label = "DS: Handle Adapter#queryOne of " + type;
+
+  promise = Promise.cast(promise, label);
+  promise = _guard(promise, _bind(_objectIsAlive, store));
+
+  return promise.then(function(adapterPayload) {
+    var payload = serializer.extract(store, type, adapterPayload, id, 'queryOne');
+    return store.push(type, payload);
+  }, null, "DS: Extract payload of queryOne " + type);
+}
