@@ -947,7 +947,7 @@ Store = Service.extend({
     language for all server-side queries, and then require all adapters to
     implement them.
 
-    This method returns a promise, which is resolved with a `RecordArray`
+    This method returns a promise, which is resolved with a `RecordObject`
     once the server returns.
 
     @method findQuery
