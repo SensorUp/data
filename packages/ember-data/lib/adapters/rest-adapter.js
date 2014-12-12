@@ -404,7 +404,7 @@ export default Adapter.extend(BuildURLMixin, {
     Called by the store in order to fetch a JSON object for the record
     that match a particular id and query.
 
-    The `queryOne` method makes an Ajax (HTTP GET) request to a URL computed by
+    The `findQueryOne` method makes an Ajax (HTTP GET) request to a URL computed by
     `buildURL`, and returns a promise for the resulting payload.
 
     The `query` argument is a simple JavaScript object that will be passed directly
@@ -416,7 +416,7 @@ export default Adapter.extend(BuildURLMixin, {
     @param {Object} query
     @return {Promise} promise
   */
-  queryOne: function(store, type, id, query) {
+  findQueryOne: function(store, type, id, query) {
     return this.ajax(this.buildURL(type.typeKey, id), 'GET', { data: query });
   },
 

@@ -36,7 +36,7 @@ import {
   _findBelongsTo,
   _findAll,
   _findQuery,
-  _queryOne
+  _findQueryOne
 } from "ember-data/system/store/finders";
 
 import RecordArrayManager from "ember-data/system/record-array-manager";
@@ -986,14 +986,14 @@ Store = Service.extend({
     @param {any} query an opaque query to be used by the adapter
     @return {Promise} promise
   */
-  queryOne: function(typeName, id, query) {
+  findQueryOne: function(typeName, id, query) {
     var type = this.modelFor(typeName);
     var adapter = this.adapterFor(type);
 
     Ember.assert("You tried to load a query but you have no adapter (for " + type + ")", adapter);
-    Ember.assert("You tried to load a query but your adapter does not implement `queryOne`", typeof adapter.queryOne === 'function');
+    Ember.assert("You tried to load a query but your adapter does not implement `findQueryOne`", typeof adapter.findQueryOne === 'function');
 
-    return promiseObject(_queryOne(adapter, this, type, query));
+    return promiseObject(_findQueryOne(adapter, this, type, query));
   },
 
   /**

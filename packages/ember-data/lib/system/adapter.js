@@ -185,20 +185,20 @@ var Adapter = Ember.Object.extend({
   findQuery: null,
 
   /**
-    The `queryOne()` method is invoked when the store is asked for a record
+    The `findQueryOne()` method is invoked when the store is asked for a record
     through an id and a query object.
 
-    In response to `queryOne()` being called, you should always fetch fresh
+    In response to `findQueryOne()` being called, you should always fetch fresh
     data. Once found, you can asynchronously call the store's `push()` method
     to push the record into the store.
 
-    Here is an example `queryOne` implementation:
+    Here is an example `findQueryOne` implementation:
 
     Example
 
     ```javascript
     App.ApplicationAdapter = DS.Adapter.extend({
-      queryOne: function(store, type, id, query) {
+      findQueryOne: function(store, type, id, query) {
         var url = [type.typeKey, id].join('/');
 
         return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -213,14 +213,14 @@ var Adapter = Ember.Object.extend({
     });
     ```
 
-    @method queryOne
+    @method findQueryOne
     @param {DS.Store} store
     @param {subclass of DS.Model} type
     @param {Object} query
     @param {String} id
     @return {Promise} promise
   */
-  queryOne: null,
+  findQueryOne: null,
 
   /**
     If the globally unique IDs for your records should be generated on the client,
