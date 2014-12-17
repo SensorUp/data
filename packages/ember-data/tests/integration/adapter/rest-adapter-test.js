@@ -1155,6 +1155,64 @@ test("findQuery - data is normalized through custom serializers", function() {
   }));
 });
 
+test("findQueryOne - returning an object populates the object", function() {
+  ajaxResponse({
+    post: { id: 1, name: "Rails is omakase" }
+  });
+
+  store.findQueryOne('post', 1, { include: 'comments' }).then(async(function(post) {
+    equal(passedUrl, '/posts/1');
+    equal(passedVerb, 'GET');
+    deepEqual(passedHash.data, { include: 'comments' });
+
+    var post1 = store.getById('post', 1);
+
+    deepEqual(
+      post1.getProperties('id', 'name'),
+      { id: "1", name: "Rails is omakase" },
+      "Post 1 is loaded"
+    );
+
+    equal(post.get('isLoaded'), true, "The RecordArray is loaded");
+  }));
+});
+
+test("findQueryOne - returning sideloaded data loads the data", function() {
+  ajaxResponse({
+    post: { id: 1, name: "Rails is omakase" },
+    comments: [{ id: 1, name: "FIRST" }]
+  });
+
+  store.findQueryOne('post', 1, { include: 'comments' }).then(async(function(post) {
+    var comment = store.getById('comment', 1);
+
+    deepEqual(comment.getProperties('id', 'name'), { id: "1", name: "FIRST" });
+  }));
+});
+
+test("findQueryOne - data is normalized through custom serializers", function() {
+  env.container.register('serializer:post', DS.RESTSerializer.extend({
+    primaryKey: '_ID_',
+    attrs: { name: '_NAME_' }
+  }));
+
+  ajaxResponse({
+    post: { _ID_: 1, _NAME_: "Rails is omakase" }
+  });
+
+  store.findQueryOne('post', 1, { include: 'comments' }).then(async(function(post) {
+    var post1 = store.getById('post', 1);
+
+    deepEqual(
+      post1.getProperties('id', 'name'),
+      { id: "1", name: "Rails is omakase" },
+      "Post 1 is loaded"
+    );
+
+    equal(post.get('isLoaded'), true, "The record is loaded");
+  }));
+});
+
 test("findMany - findMany uses a correct URL to access the records", function() {
   Post.reopen({ comments: DS.hasMany('comment', { async: true }) });
   adapter.coalesceFindRequests = true;
