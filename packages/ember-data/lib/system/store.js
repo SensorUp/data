@@ -993,7 +993,7 @@ Store = Service.extend({
     Ember.assert("You tried to load a query but you have no adapter (for " + type + ")", adapter);
     Ember.assert("You tried to load a query but your adapter does not implement `findQueryOne`", typeof adapter.findQueryOne === 'function');
 
-    return promiseObject(_findQueryOne(adapter, this, type, query));
+    return promiseObject(_findQueryOne(adapter, this, type, id, query));
   },
 
   /**
