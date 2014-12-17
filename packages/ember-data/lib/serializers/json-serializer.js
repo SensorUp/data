@@ -752,7 +752,7 @@ export default Serializer.extend({
     call is made to `DS.Store#findQuery`. By default this method is an
     alias for [extractArray](#method_extractArray).
 
-    @method extractFindQuery
+    @method extractFindQueryOne
     @param {DS.Store} store
     @param {subclass of DS.Model} type
     @param {Object} payload
@@ -762,6 +762,22 @@ export default Serializer.extend({
   */
   extractFindQuery: function(store, type, payload, id, requestType) {
     return this.extractArray(store, type, payload, id, requestType);
+  },
+  /**
+    `extractFindQueryOne` is a hook into the extract method used when a
+    call is made to `DS.Store#findQueryOne`. By default this method is an
+    alias for [extractSingle](#method_extractSingle).
+
+    @method extractFindQuery
+    @param {DS.Store} store
+    @param {subclass of DS.Model} type
+    @param {Object} payload
+    @param {String or Number} id
+    @param {String} requestType
+    @return {Object} json The deserialized payload
+  */
+  extractFindQueryOne: function(store, type, payload, id, requestType){
+    return this.extractSingle(store, type, payload, id, requestType);
   },
   /**
     `extractFindMany` is a hook into the extract method used when a
