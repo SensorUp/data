@@ -776,7 +776,7 @@ export default Serializer.extend({
     @param {String} requestType
     @return {Object} json The deserialized payload
   */
-  extractFindQueryOne: function(store, type, payload, id, requestType){
+  extractFindQueryOne: function(store, type, payload, id, requestType) {
     return this.extractSingle(store, type, payload, id, requestType);
   },
   /**
