@@ -752,7 +752,7 @@ export default Serializer.extend({
     call is made to `DS.Store#findQuery`. By default this method is an
     alias for [extractArray](#method_extractArray).
 
-    @method extractFindQueryOne
+    @method extractFindQuery
     @param {DS.Store} store
     @param {subclass of DS.Model} type
     @param {Object} payload
@@ -768,7 +768,7 @@ export default Serializer.extend({
     call is made to `DS.Store#findQueryOne`. By default this method is an
     alias for [extractSingle](#method_extractSingle).
 
-    @method extractFindQuery
+    @method extractFindQueryOne
     @param {DS.Store} store
     @param {subclass of DS.Model} type
     @param {Object} payload
